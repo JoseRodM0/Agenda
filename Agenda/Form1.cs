@@ -11,8 +11,27 @@ namespace Agenda
         {
             try
             {
-                string[] datos = File.ReadAllLines(@"Datos\Personas.csv");
-                MessageBox.Show(datos[1]);
+                string[] renglones = File.ReadAllLines(@"Datos\Personas.csv");
+                List<Contacto> contactos = new List<Contacto>();
+
+                bool esEncabezado = true;
+                foreach (string renglon in renglones)
+                {
+                    if (esEncabezado == true)
+                    {
+                        esEncabezado = false;
+                        continue;
+                    }
+
+                    string[] columnas = renglon.Split(',');
+                    Contacto contacto = new Contacto();
+                    contacto.Nombre = columnas[0];
+                    contacto.Apellido = columnas[1];
+                    contacto.Email = columnas[2];
+
+                    contactos.Add(contacto);
+                }
+                DgvContactos.DataSource = contactos;
             }
             catch (Exception ex)
             {
